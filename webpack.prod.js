@@ -4,6 +4,7 @@ const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plug
 const CopyPlugin                     = require('copy-webpack-plugin');
 const MinifyPlugin                   = require('babel-minify-webpack-plugin');
 const { CleanWebpackPlugin }         = require('clean-webpack-plugin');
+const { SourceMapDevToolPlugin }       = require('webpack');
 
 module.exports = {
     mode: 'production',
@@ -60,6 +61,11 @@ module.exports = {
                     }
                 ]
             },
+            {
+                test: /\.js$/,
+                enforce: 'pre',
+                use: ['source-map-loader'],
+            },
         ]
     },
     plugins: [
@@ -78,5 +84,8 @@ module.exports = {
         }),
         new MinifyPlugin(),
         new CleanWebpackPlugin(),
+        new SourceMapDevToolPlugin({
+            filename: "[file].map"
+          }),
     ]
 }
